@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import API from '../../api/axios';
 import { PlusIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import ExcelImportModal from './ExcelImportModal';
 
 const CreateGrupoForm = ({ onSuccess, onCancel, onRefreshGrupos }) => {
   const [nombre, setNombre] = useState("");
@@ -10,6 +11,8 @@ const CreateGrupoForm = ({ onSuccess, onCancel, onRefreshGrupos }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [newGrupo, setNewGrupo] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +43,9 @@ const CreateGrupoForm = ({ onSuccess, onCancel, onRefreshGrupos }) => {
       if (onSuccess) onSuccess();
       if (onRefreshGrupos) onRefreshGrupos();
 
+      setNewGrupo(res.data);
+      setShowImportModal(true);
+
       setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       setError(error.response?.data?.message || "Error creando grupo");
@@ -49,7 +55,7 @@ const CreateGrupoForm = ({ onSuccess, onCancel, onRefreshGrupos }) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 max-w-lg mx-auto">
+<div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 max-w-md mx-auto">
       <div className="text-center mb-8">
         <div className="w-20 h-20 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <CalendarIcon className="w-10 h-10 text-purple-600" />
@@ -69,7 +75,7 @@ const CreateGrupoForm = ({ onSuccess, onCancel, onRefreshGrupos }) => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Nombre del Grupo *
@@ -160,6 +166,15 @@ const CreateGrupoForm = ({ onSuccess, onCancel, onRefreshGrupos }) => {
           </button>
         </div>
       </form>
+
+      {showImportModal && newGrupo && (
+        <ExcelImportModal
+          isOpen={showImportModal}
+          grupo={newGrupo}
+          onClose={() => setShowImportModal(false)}
+          onSuccess={onRefreshGrupos}
+        />
+      )}
     </div>
   );
 };

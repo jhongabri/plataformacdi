@@ -6,14 +6,16 @@ const GestionCards = ({
   onCreateGrupo, 
   onViewDocentes, 
   onViewGrupos, 
+  onReportes,
   docentesCount, 
   gruposCount 
 }) => {
   const handleImportExcel = () => console.log('Import Excel clicked');
-  const handleReportes = () => console.log('Reportes clicked');
+  const handleReportes = onReportes || (() => {});
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
       {/* Card Crear Docente */}
       <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300 cursor-pointer" onClick={onCreateDocente}>
         <div className="flex items-center justify-between">
@@ -25,7 +27,6 @@ const GestionCards = ({
         <h3 className="mt-4 text-lg font-semibold text-gray-900">Crear Docente</h3>
         <p className="mt-1 text-sm text-gray-500">Agregar nuevo docente al sistema</p>
       </div>
-
 
       {/* Card Crear Grupo */}
       <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-purple-200 transition-all duration-300 cursor-pointer" onClick={onCreateGrupo}>
@@ -60,23 +61,11 @@ const GestionCards = ({
           <div className="w-2 h-2 bg-indigo-400 rounded-full group-hover:bg-indigo-600"></div>
         </div>
         <h3 className="mt-4 text-lg font-semibold text-gray-900">Grupos ({gruposCount || 0})</h3>
-        <p className="mt-1 text-sm text-gray-500">Ver grupos y importar estudiantes Excel</p>
+        <p className="mt-1 text-sm text-gray-500">Ver grupos e importar estudiantes Excel</p>
       </div>
 
-      {/* Card Import Excel */}
-      <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer" onClick={onImportExcel}>
-        <div className="flex items-center justify-between">
-          <div className="p-3 bg-emerald-100 rounded-xl group-hover:bg-emerald-200 transition">
-            <CloudArrowUpIcon className="w-8 h-8 text-emerald-600" />
-          </div>
-          <div className="w-2 h-2 bg-emerald-400 rounded-full group-hover:bg-emerald-600"></div>
-        </div>
-        <h3 className="mt-4 text-lg font-semibold text-gray-900">Importar Excel</h3>
-        <p className="mt-1 text-sm text-gray-500">Carga masiva estudiantes desde XLSX</p>
-      </div>
-
-      {/* Card Reportes */}
-      <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-orange-200 transition-all duration-300 cursor-pointer" onClick={onReportes}>
+      {/* ✅ FIX: Card Reportes — faltaba el <div> de apertura completo */}
+      <div className="group bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-orange-200 transition-all duration-300 cursor-pointer" onClick={handleReportes}>
         <div className="flex items-center justify-between">
           <div className="p-3 bg-orange-100 rounded-xl group-hover:bg-orange-200 transition">
             <DocumentTextIcon className="w-8 h-8 text-orange-600" />
@@ -86,10 +75,10 @@ const GestionCards = ({
         <h3 className="mt-4 text-lg font-semibold text-gray-900">Reportes</h3>
         <p className="mt-1 text-sm text-gray-500">Gestionar reportes de docentes</p>
       </div>
+
     </div>
   );
 };
 
 export default GestionCards;
-
 

@@ -5,16 +5,25 @@ const DocentesList = ({
   docentes, 
   grupos, 
   onAsignarGrupo, 
+  onBack,
   loading 
 }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-        <svg className="w-7 h-7 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        Lista de Docentes ({docentes.length})
-      </h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-bold text-gray-900 flex items-center">
+          <svg className="w-7 h-7 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          Lista de Docentes ({docentes.length})
+        </h3>
+        <button
+          onClick={onBack}
+          className="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-lg transition"
+        >
+          ← Volver
+        </button>
+      </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
@@ -33,23 +42,23 @@ const DocentesList = ({
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nombre</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Correo</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Estado</th>
-                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Grupo</th>
-                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
+  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nombre</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Correo</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Estado</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Grupo</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {docentes.map((docente) => (
                 <tr key={docente.id_usuario} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+  <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
                     {docente.nombre}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
                     {docente.correo}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-3 whitespace-nowrap">
                     <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${
                       docente.estado 
                         ? 'bg-green-100 text-green-800' 
@@ -58,7 +67,7 @@ const DocentesList = ({
                       {docente.estado ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {docente.nombre_grupo ? (
                       <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
                         {docente.nombre_grupo}
@@ -67,7 +76,7 @@ const DocentesList = ({
                       <span className="text-gray-500 text-xs font-medium">Sin asignar</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                  <td className="px-4 py-3 whitespace-nowrap text-center text-sm font-medium">
                     <button
                       onClick={() => onAsignarGrupo(docente)}
                       className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-xl transition shadow-sm"

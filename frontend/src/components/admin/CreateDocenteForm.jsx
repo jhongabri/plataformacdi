@@ -41,7 +41,7 @@ const CreateDocenteForm = ({ onSuccess, onCancel, onRefreshStats }) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 max-w-md mx-auto">
+    <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 max-w-sm mx-auto">
       <div className="text-center mb-8">
         <div className="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <PlusIcon className="w-10 h-10 text-blue-600" />

@@ -4,16 +4,25 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 const GruposList = ({ 
   grupos, 
   onImportExcel, 
+  onBack,
   loading 
 }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-        <svg className="w-7 h-7 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-        </svg>
-        Grupos ({grupos.length})
-      </h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-bold text-gray-900 flex items-center">
+          <svg className="w-7 h-7 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+          Grupos ({grupos.length})
+        </h3>
+        <button
+          onClick={onBack}
+          className="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-lg transition"
+        >
+          ← Volver
+        </button>
+      </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
@@ -33,33 +42,33 @@ const GruposList = ({
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nombre</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Rango Edades</th>
-                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Estudiantes</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Horario</th>
-                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
+  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nombre</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Rango Edades</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Estudiantes</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Horario</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {grupos.map((grupo) => (
                 <tr key={grupo.id_grupo} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-semibold text-gray-900">
+                  <td className="px-4 py-3 font-semibold text-gray-900">
                     {grupo.nombre}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-3">
                     <span className="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-full">
                       {grupo.edad_minima}-{grupo.edad_maxima} años
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-4 py-3 text-center">
                     <span className="font-bold text-2xl text-indigo-600">
                       {grupo.total_estudiantes || 0}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-700">
+                  <td className="px-4 py-3 text-sm text-gray-700">
                     {grupo.horario || 'No definido'}
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => onImportExcel(grupo)}
                       className="inline-flex items-center px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl transition shadow-sm hover:shadow-md"
