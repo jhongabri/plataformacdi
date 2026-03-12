@@ -6,7 +6,9 @@ const {
   createDocente, 
   getAllDocentes, 
   getAllGrupos,
-  asignarGrupoDocente 
+  asignarGrupoDocente,
+  getEstudiantesPorGrupo,
+  importarEstudiantesAdmin
 } = require("../controllers/admin.controller");
 
 // 👇 Importación correcta
@@ -23,6 +25,14 @@ router.get("/docentes", verifyToken, hasRole(1), getAllDocentes);
 
 // Obtener todos los grupos
 router.get("/grupos", verifyToken, hasRole(1), getAllGrupos);
+
+// Ver estudiantes de grupo
+router.get("/grupos/:id/estudiantes", verifyToken, hasRole(1), getEstudiantesPorGrupo);
+
+// Importar Excel a grupo
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+router.post("/grupos/importar", verifyToken, hasRole(1), upload.single("excel"), importarEstudiantesAdmin);
 
 // Asignar grupo a docente
 router.put("/docentes/asignar-grupo", verifyToken, hasRole(1), asignarGrupoDocente);
