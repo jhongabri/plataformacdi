@@ -14,6 +14,13 @@ const AsignarGrupoModal = ({
 }) => {
   if (!isOpen || !docente) return null;
 
+  // ✅ FIX 1: Interceptar el submit del form para evitar recarga de página,
+  // luego llamar onSubmit que es la función async del padre
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit();
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-6 w-full max-w-sm mx-4">
@@ -41,14 +48,16 @@ const AsignarGrupoModal = ({
           </div>
         )}
 
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-3">
               Seleccionar Grupo
             </label>
             <select
               value={grupoSeleccionado}
-              onChange={onGrupoChange}
+              // ✅ FIX 2: Extraer e.target.value antes de pasar al padre,
+              // que espera el grupoId directamente, no el evento
+              onChange={(e) => onGrupoChange(e.target.value)}
               className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm"
             >
               <option value="">— Sin grupo asignado —</option>
@@ -95,4 +104,3 @@ const AsignarGrupoModal = ({
 };
 
 export default AsignarGrupoModal;
-

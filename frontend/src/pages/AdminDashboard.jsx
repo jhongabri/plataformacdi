@@ -80,11 +80,11 @@ export default function AdminDashboard() {
   const [asignandoGrupo, setAsignandoGrupo] = useState(false);
   const [grupoError, setGrupoError] = useState("");
 
-  // ✅ FIX 1: Handlers del modal AsignarGrupo que se usaban pero no estaban definidos
+  // ✅ FIX: Un único handler que siempre limpia el estado antes de abrir el modal
   const handleOpenAsignarModal = (docente) => {
     setSelectedDocente(docente);
-    setSelectedGrupoId("");
-    setGrupoError("");
+    setSelectedGrupoId("");   // limpiar selección previa
+    setGrupoError("");        // limpiar error previo
     setShowAsignarModal(true);
   };
 
@@ -102,19 +102,21 @@ export default function AdminDashboard() {
 
   const handleAsignarGrupoSubmit = async () => {
     if (!selectedGrupoId) {
-      setGrupoError("Debes seleccionar un grupo");
+      setGrupoError("Selecciona un grupo");
       return;
     }
     setAsignandoGrupo(true);
     setGrupoError("");
     try {
-      await API.post(`/admin/docentes/${selectedDocente.id_usuario}/asignar-grupo`, {
+      await API.put("/admin/docentes/asignar-grupo", {
+        id_docente: selectedDocente.id_usuario,
         id_grupo: selectedGrupoId,
       });
-      await refreshDocentes();
       handleCloseAsignarModal();
+      refreshDocentes();
+      refreshGrupos();
     } catch (err) {
-      setGrupoError("Error al asignar el grupo. Intenta de nuevo.");
+      setGrupoError(err.response?.data?.message || "Error asignando grupo");
     } finally {
       setAsignandoGrupo(false);
     }
@@ -330,7 +332,6 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               ) : (
-                // ✅ FIX 2: </div> estaba fuera del bloque ternario — ahora cierra correctamente dentro del : (...)
                 <div className="max-w-7xl mx-auto py-12 px-6">
                   {gestionSubView === "cards" && (
                     <GestionCards
@@ -361,11 +362,12 @@ export default function AdminDashboard() {
                     />
                   )}
 
+                  {/* ✅ FIX: usa handleOpenAsignarModal que limpia estado antes de abrir */}
                   {gestionSubView === "docentes" && (
                     <DocentesList
                       docentes={docentes}
                       grupos={grupos}
-                      loading={docentesLoading}
+                      loading={docentesLoading || gruposLoading}
                       onAsignarGrupo={handleOpenAsignarModal}
                       onBack={() => setGestionSubView("cards")}
                     />
@@ -385,7 +387,7 @@ export default function AdminDashboard() {
                 </div>
               )}
 
-              {/* ✅ FIX 3: Modales fuera del ternario pero dentro del Fragment */}
+              {/* Modales fuera del ternario pero dentro del Fragment */}
               {showExcelModal && selectedGrupoExcel && (
                 <ExcelImportModal
                   isOpen={showExcelModal}
